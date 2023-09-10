@@ -4,7 +4,7 @@ const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDoc = YAML.load("./swagger.yaml");
 const OpenApiValidator = require("express-openapi-validator");
-const port=process.env.PORT ||4000;
+const port = process.env.PORT || 4000;
 // const Article = require("./models/Article");
 const articleServices = require("./services/article");
 //express app
@@ -20,7 +20,7 @@ app.use(
 );
 // health route
 app.get("/health", (_req, res) => {
-  res.send("this is healt route");
+  res.send("now we can say this is working well if we get this path");
 });
 
 // get all articles
