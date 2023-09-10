@@ -19,6 +19,8 @@ info:
 servers:
   - description: dev
     url: http://localhost:5000/api/v1
+  - description: server
+    url: https://ar-blog-api.onrender.com/api/v1
 tags:
   - name: Auth
     description: authentaion end points
