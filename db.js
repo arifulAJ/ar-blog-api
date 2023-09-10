@@ -25,4 +25,5 @@ class databaseConnection {
 }
 
 const connection = new databaseConnection(path.resolve(process.env.DB_URL));
+
 module.exports = connection;

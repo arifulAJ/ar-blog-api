@@ -36,10 +36,11 @@ app.get("/api/v1/articles", async (req, res) => {
     await articleServices.findArticles({ ...req.query, page, limit });
 
   // search article by search tarm
-
+  console.log(articles);
   // responses articles
   const respons = {
     data: articleServices.transfromeArticles({ articles }),
+
     pagination: {
       page,
       limit,

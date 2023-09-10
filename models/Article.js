@@ -1,12 +1,12 @@
 const connection = require("../db");
-
+console.log(connection);
 class Articel {
   constructor() {
     this.articles = [];
   }
   async init() {
     const db = await connection.getDb();
-    this.articles = db.articles;
+    this.articles = await db.articles;
   }
   async find() {
     return this.articles;
@@ -25,9 +25,9 @@ class Articel {
   async sort(articles, sortType = "acc", sortBy = "updatedAt") {
     let result = [];
     if (sortType === "acc") {
-      result = await this.#sortAcc(articles, sortBy);
+      result = await this.sortAcc(articles, sortBy);
     } else {
-      result = await this.#sortDec(articles.sortBy);
+      result = await this.sortDec(articles.sortBy);
     }
 
     return result;
@@ -45,12 +45,12 @@ class Articel {
       hasPrev: page > 1,
     };
   }
-  async #sortAcc(articles, sortBy) {
+  async sortAcc(articles, sortBy) {
     return articles.sort((a, b) =>
       a[sortBy].toString().localeCompare(b[sortBy].toString())
     );
   }
-  async #sortDec(articles, sortBy) {
+  async sortDec(articles, sortBy) {
     return articles.sort((a, b) =>
       b[sortBy].toString().localeCompare(a[sortBy].toString())
     );
