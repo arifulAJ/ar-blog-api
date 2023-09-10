@@ -1,0 +1,709 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: "A.R blog api"
+  description: "this is rest api for blog site development, i will give there all end point for api consumers"
+  contact:
+    name: "A.R.I tech hub"
+    url: "https//a.r.i.tech-venture"
+    email: a.r.i.support@info.com
+
+servers:
+  - description: dev
+    url: http://localhost:4000/api/v1
+tags:
+  - name: Auth
+    description: authentaion end points
+  - name: Article
+    description: article endpoints (public or private)
+  - name: Comment
+    description: comment endpoints (private)
+  - name: User
+    description: user endpoints (admin only)
+
+paths:
+  "/auth/register":
+    post:
+      description: create a new  user
+      tags: [Auth]
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Md Ariful islam
+                email:
+                  type: string
+                  format: email
+                  example: ariful@example.com
+                password:
+                  type: string
+                  format: password
+                  example: pass123
+              required: [name, email, password]
+      responses:
+        "201":
+          description: sign up sussesful
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: sign up successful
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/auth/singup"
+                      signin:
+                        type: string
+                        example: "/auth/signin"
+        "400":
+          $ref: "#/components/responses/400"
+        "500":
+          $ref: "#/components/responses/500"
+
+  "/auth/singin":
+    post:
+      description: sing in by credadintail
+      tags:
+        - Auth
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: ariful@example.com
+                password:
+                  type: string
+                  format: password
+                  example: pass123
+              required: [email, password]
+      responses:
+        "200":
+          description: sing in successfuly
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: sign in successful
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: "/auth/singup"
+
+        "400":
+          $ref: "#/components/responses/400"
+        "500":
+          $ref: "#/components/responses/500"
+
+  "/articles":
+    get:
+      tags: [Article]
+      description: Retrive all published articles
+      parameters:
+        - $ref: "#/components/parameters/pageParams"
+        - $ref: "#/components/parameters/limitParams"
+        - $ref: "#/components/parameters/sortTypeParams"
+        - $ref: "#/components/parameters/sortByparams"
+        - $ref: "#/components/parameters/searchparams"
+      responses:
+        "200":
+          description: return the list of article
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            id:
+                              type: integer
+                              format: int32
+                              example: 1
+                            title:
+                              type: string
+                              example: first article
+                            cover:
+                              type: string
+                              format: url
+                              example: http://digital.jpg
+                            author:
+                              $ref: "#/components/schemas/authorDTO"
+                            link:
+                              type: string
+                              format: url
+                              example: /aritcle/2
+
+                          required: [id, title, author]
+                        - $ref: "#/components/schemas/Timestamp"
+                  pagination:
+                    $ref: "#/components/schemas/pagination"
+                  links:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        format: url
+                        example: /article?page=2&limit=10
+                      next:
+                        type: string
+                        format: url
+                        example: /article?page=3&limit=10
+                      prev:
+                        type: string
+                        format: url
+                        example: /article?page=1&limit=10
+        "400":
+          $ref: "#/components/responses/400"
+        "500":
+          $ref: "#/components/responses/500"
+    post:
+      operationId: createPost
+      security:
+        - bearerAuth: []
+      tags: [Article]
+      description: create a new article
+      requestBody:
+        description: to create new article user must provide valid data
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: blog article of CMV
+                body:
+                  type: string
+                  format: text
+                  example: this is body of article
+                cover:
+                  type: string
+                  format: url
+                  example: http://s3.3aws.min.com
+                status:
+                  type: string
+                  enum: [draft, published]
+                  example: draft
+              required: [title, body]
+      responses:
+        "201":
+          description: created successfully
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ArticleCreatedDTO"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "500":
+          $ref: "#/components/responses/500"
+  "/articles/{id}":
+    get:
+      tags: [Article]
+      description: fetch a single article
+      parameters:
+        - $ref: "#/components/parameters/idpathparams"
+        - in: query
+          name: expand
+          description: expand author , comment and like objcet
+          schema:
+            type: string
+            example: "author,comment,like"
+      responses:
+        "200":
+          description: single article view
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/Articles"
+                      - type: object
+                        properties:
+                          author:
+                            $ref: "#/components/schemas/authorDTO"
+                      - type: object
+                        properties:
+                          comments:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/Comment"
+
+                  linke:
+                    type: object
+                    properties:
+                      self:
+                        type: string
+                        example: /article/1
+                      author:
+                        type: string
+                        example: /aritcle/1/author
+                      comments:
+                        type: string
+                        example: /aritcle/1/comments
+                      likes:
+                        type: string
+                        example: /aritcle/1/likes
+
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+    put:
+      security:
+        - bearerAuth: []
+      tags: [Article]
+      description: create or update
+      parameters:
+        - $ref: "#/components/parameters/idpathparams"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+                  example: 1
+                title:
+                  type: string
+                  example: article title
+                body:
+                  type: string
+                  format: text
+                  example: article body
+                cover:
+                  type: string
+                  format: url
+                  example: http://s3.awamor.jeg
+                status:
+                  type: string
+                  enum: [darft, published]
+                  example: draft
+              required: [title, body, status]
+      responses:
+        "200":
+          description: updated successfully
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/articleUpdateDTO"
+        "201":
+          description: created successfully
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/ArticleCreatedDTO"
+
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "500":
+          $ref: "#/components/responses/500"
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [Article]
+      description: update the article
+      parameters:
+        - $ref: "#/components/parameters/idpathparams"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int32
+                  example: 1
+                title:
+                  type: string
+                  example: article title
+                body:
+                  type: string
+                  format: text
+                  example: article body
+                cover:
+                  type: string
+                  format: url
+                  example: http://s3.awamor.jeg
+                status:
+                  type: string
+                  enum: [darft, published]
+                  example: draft
+
+      responses:
+        "200":
+          description: updated successfully
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/articleUpdateDTO"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Article]
+      description: delete the article
+      parameters:
+        - $ref: "#/components/parameters/idpathparams"
+      responses:
+        "204":
+          description: article delete successfully
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+        "500":
+          $ref: "#/components/responses/500"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Articles:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+              example: 1
+            authorId:
+              type: integer
+              format: int32
+              example: 1
+            title:
+              type: string
+              example: First article
+            body:
+              type: string
+              format: text
+              example: the body of the first article
+            cover:
+              type: string
+              format: url
+              example: http://s.3hawsfrom.bit
+            status:
+              type: string
+              enum: [draft, publised]
+              example: draft
+          required: [id, authorId, title, body, status]
+        - $ref: "#/components/schemas/Timestamp"
+    ArticleCreatedDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 201
+        message:
+          type: string
+          example: article create successfully
+        data:
+          $ref: "#/components/schemas/Articles"
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: url
+              example: /article/1
+            author:
+              type: string
+              format: url
+              example: /article/1/author
+            comments:
+              type: string
+              format: url
+              example: /article/1/comments
+    articleUpdateDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          type: string
+          example: article update successfully
+        data:
+          $ref: "#/components/schemas/Articles"
+
+        linke:
+          type: object
+          properties:
+            self:
+              type: string
+              example: /article/1
+    Comment:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int32
+              example: 1
+            authorId:
+              type: integer
+              format: int32
+              example: 1
+            articleId:
+              type: integer
+              format: int32
+              example: 1
+            body:
+              type: string
+              format: text
+              example: the body of the first article
+            status:
+              type: string
+              enum: [public, privet]
+              example: public
+          required: [id, authorId, articleId, title, body, status]
+        - $ref: "#/components/schemas/Timestamp"
+    Timestamp:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [createdAt, updatedAt]
+    authorDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 3
+        name:
+          type: string
+          example: atik
+      required: [id, name]
+    pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          example: 2
+        limit:
+          type: integer
+          format: int32
+          example: 5
+        next:
+          type: integer
+          format: int32
+          example: 3
+        prev:
+          type: integer
+          format: int32
+          example: 1
+        totalpage:
+          type: integer
+          format: int32
+          example: 10
+        totalitems:
+          type: integer
+          format: int32
+          example: 20
+      required:
+        - page
+        - limit
+        - totalpage
+        - totalitems
+
+  responses:
+    "500":
+      description: Internal Server Error
+      content:
+        "aplication/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                format: int32
+                example: 500
+              error:
+                type: string
+                example: Internal Server Error
+              message:
+                type: string
+                example: we are sory for the inconvenent . pleace try agin later
+
+    "400":
+      description: bad request
+      content:
+        "aplication/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                format: int32
+                example: 400
+              error:
+                type: string
+                example: bad request
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                      example: email
+                    message:
+                      type: string
+                      example: invalide email
+                    in:
+                      type: string
+                      enum: [query.body]
+                      example: body
+    "401":
+      description: UnAuthorized
+      content:
+        "aplication/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                format: int32
+                example: 401
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: you don't have right for permission
+    "404":
+      description: Resource  not found
+      content:
+        "aplication/json":
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                format: int32
+                example: 404
+              error:
+                type: string
+                example: not found
+              message:
+                type: string
+                example: Request resource not found
+  parameters:
+    pageParams:
+      in: query
+      name: page
+      description: current page number
+      schema:
+        type: integer
+        format: int32
+        example: 2
+    limitParams:
+      in: query
+      name: limit
+      description: limit the page
+      schema:
+        type: integer
+        format: int32
+        example: 10
+    sortTypeParams:
+      in: query
+      name: sort_type
+      description: shorted the acc or dec
+      schema:
+        type: string
+        enum: [acc, dec]
+
+    sortByparams:
+      in: query
+      name: sort_by
+      description: sorted by
+      schema:
+        type: string
+        example: updatedAt
+    searchparams:
+      in: query
+      name: search
+      description: search by title
+      schema:
+        type: string
+        example: title
+    idpathparams:
+      in: path
+      name: id
+      required: true
+      description: article id
+      schema:
+        type: integer
+        format: int32
+        example: 1
