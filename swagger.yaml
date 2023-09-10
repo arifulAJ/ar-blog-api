@@ -2,15 +2,23 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: "A.R blog api"
-  description: "this is rest api for blog site development, i will give there all end point for api consumers"
+  description: |
+    The A.R Blog API is a robust and flexible RESTful API that allows you to manage blog posts, comments, and user accounts for your blogging platform. It provides a secure and efficient way to create, retrieve, update, and delete blog content.
+
+    **Key Features:**
+    - Create and manage blog posts with titles, content, and tags.
+    - Allow user registration and authentication for creating and managing their own blog posts and comments.
+    - Enable commenting on blog posts to foster community engagement.
+    - Retrieve lists of blog posts with pagination and filtering options.
+    - Built-in security measures, including authentication and authorization, to protect user data and content
   contact:
-    name: "A.R.I tech hub"
+    name: "A.R Tech Hub"
     url: "https//a.r.i.tech-venture"
-    email: a.r.i.support@info.com
+    email: arifulislam10111999@gmail.com
 
 servers:
   - description: dev
-    url: http://localhost:4000/api/v1
+    url: http://localhost:5000/api/v1
 tags:
   - name: Auth
     description: authentaion end points

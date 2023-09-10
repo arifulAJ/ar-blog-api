@@ -27,4 +27,5 @@ Before running the Blog API, make sure you have the following software installed
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/blog-api.git
+   git clone https://github.com/arifulislam10111999/demo-api.git
+   ```
