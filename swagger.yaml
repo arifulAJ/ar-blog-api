@@ -560,7 +560,7 @@ components:
         page:
           type: integer
           format: int32
-          example: 2
+          example: 1
         limit:
           type: integer
           format: int32
@@ -576,7 +576,7 @@ components:
         totalpage:
           type: integer
           format: int32
-          example: 10
+          example: 5
         totalitems:
           type: integer
           format: int32
@@ -677,7 +677,8 @@ components:
       schema:
         type: integer
         format: int32
-        example: 2
+        example: 1
+      required: true
     limitParams:
       in: query
       name: limit
@@ -685,7 +686,8 @@ components:
       schema:
         type: integer
         format: int32
-        example: 10
+        example: 5
+      required: true
     sortTypeParams:
       in: query
       name: sort_type

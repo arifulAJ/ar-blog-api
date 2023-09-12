@@ -1,13 +1,8 @@
-const connection = require("../db");
-console.log(connection);
 class Articel {
-  constructor() {
-    this.articles = [];
+  constructor(articles) {
+    this.articles = articles;
   }
-  async init() {
-    const db = await connection.getDb();
-    this.articles = await db.articles;
-  }
+
   async find() {
     return this.articles;
   }
@@ -22,12 +17,12 @@ class Articel {
       article.title.toLowerCase().includes(term)
     );
   }
-  async sort(articles, sortType = "acc", sortBy = "updatedAt") {
+  async sort(articles, sortType = "dec", sortBy = "updatedAt") {
     let result = [];
     if (sortType === "acc") {
       result = await this.sortAcc(articles, sortBy);
     } else {
-      result = await this.sortDec(articles.sortBy);
+      result = await this.sortDec(articles, sortBy);
     }
 
     return result;
@@ -44,6 +39,15 @@ class Articel {
       hasNext: page < totalpage,
       hasPrev: page > 1,
     };
+  }
+  async creat(article, databaseConnection) {
+    article.id = this.articles[this.articles.length - 1].id + 1;
+    article.createdAt = new Date().toISOString();
+    article.updatedAt = new Date().toISOString();
+    this.articles.push(article);
+    databaseConnection.db.articles = this.articles;
+    await databaseConnection.write();
+    return article;
   }
   async sortAcc(articles, sortBy) {
     return articles.sort((a, b) =>

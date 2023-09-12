@@ -1,13 +1,8 @@
 const Article = require("../models/Article");
-const findArticles = async ({
-  page = 1,
-  limit = 5,
-  sortType = "acc",
-  sortBy = "updatedAt",
-  search = "",
-}) => {
-  const articleInstance = new Article();
-  await articleInstance.init();
+const databaseConnection = require("../db");
+const findArticles = async ({ page, limit, sortType, sortBy, search }) => {
+  const articleInstance = new Article(databaseConnection.db.articles);
+
   let articles;
   // search article by search tarm
   if (search) {
@@ -15,14 +10,16 @@ const findArticles = async ({
   } else {
     articles = await articleInstance.find();
   }
+
   //sorting
   // by the localCompayer it also shortable
+  articles = [...articles];
   articles = await articleInstance.sort(articles, sortType, sortBy);
 
   // pagination
   const { totalitems, totalpage, result, hasNext, hasPrev } =
     await articleInstance.pagination(articles, page, limit);
-  console.log(page, limit, sortBy, sortType, search);
+
   return {
     totalitems,
     totalpage,
@@ -46,4 +43,12 @@ const transfromeArticles = ({ articles = [] }) => {
     return transfromed;
   });
 };
-module.exports = { findArticles, transfromeArticles };
+const creatArticle = async ({ title, body, cover = "", status = "draft" }) => {
+  const articleInstance = new Article(databaseConnection.db.articles);
+  const article = await articleInstance.creat(
+    { title, body, cover, status },
+    databaseConnection
+  );
+  return article;
+};
+module.exports = { findArticles, transfromeArticles, creatArticle };

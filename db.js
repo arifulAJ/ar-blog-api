@@ -1,12 +1,12 @@
 const fs = require("fs/promises");
 const path = require("path");
 
-class databaseConnection {
+class DatabaseConnection {
   constructor(dbUrl) {
     this.db = null;
     this.dbUrl = dbUrl;
   }
-  async read() {
+  async connect() {
     const dbSting = await fs.readFile(this.dbUrl, { encoding: "utf-8" });
     this.db = JSON.parse(dbSting);
   }
@@ -15,15 +15,9 @@ class databaseConnection {
       await fs.writeFile(this.dbUrl, JSON.stringify(this.db));
     }
   }
-  async getDb() {
-    if (this.db) {
-      return this.db;
-    }
-    await this.read();
-    return this.db;
-  }
 }
+const databaseConnection = new DatabaseConnection(
+  path.resolve(process.env.DB_URL)
+);
 
-const connection = new databaseConnection(path.resolve(process.env.DB_URL));
-
-module.exports = connection;
+module.exports = databaseConnection;
