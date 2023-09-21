@@ -32,7 +32,7 @@ tags:
     description: user endpoints (admin only)
 
 paths:
-  "/auth/register":
+  "/auth/signup":
     post:
       description: create a new  user
       tags: [Auth]
@@ -90,7 +90,7 @@ paths:
         "500":
           $ref: "#/components/responses/500"
 
-  "/auth/singin":
+  "/auth/signin":
     post:
       description: sing in by credadintail
       tags:
@@ -144,6 +144,62 @@ paths:
         "500":
           $ref: "#/components/responses/500"
 
+    get:
+      summary: Retrieve Signin Information
+      tags:
+        - Auth
+      description: Retrieve information about the signin process.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A success message.
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message indicating that the resource was not found.
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message indicating an internal server error.
+                description: sing in by credadintail
+  "/auth/logout":
+    post:
+      summary: Logout
+      tags:
+        - Auth
+      description: Log out the authenticated user.
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message indicating that the user is not authenticated.
   "/articles":
     get:
       tags: [Article]
@@ -177,7 +233,9 @@ paths:
                               example: first article
                             cover:
                               type: string
-                              format: url
+
+                              # format: url
+                              nullable: true
                               example: http://digital.jpg
                             author:
                               $ref: "#/components/schemas/authorDTO"
@@ -213,6 +271,8 @@ paths:
       operationId: createPost
       security:
         - bearerAuth: []
+      # security:
+      #   - sessionAuth: []
       tags: [Article]
       description: create a new article
       requestBody:
@@ -231,7 +291,8 @@ paths:
                   example: this is body of article
                 cover:
                   type: string
-                  format: url
+                  # format: url
+                  nullable: true
                   example: http://s3.3aws.min.com
                 status:
                   type: string
@@ -333,7 +394,8 @@ paths:
                   example: article body
                 cover:
                   type: string
-                  format: url
+                  # format: url
+                  nullable: true
                   example: http://s3.awamor.jeg
                 status:
                   type: string
@@ -386,7 +448,8 @@ paths:
                   example: article body
                 cover:
                   type: string
-                  format: url
+                  # format: url
+                  nullable: true
                   example: http://s3.awamor.jeg
                 status:
                   type: string
@@ -453,7 +516,8 @@ components:
               example: the body of the first article
             cover:
               type: string
-              format: url
+              # format: url
+              nullable: true
               example: http://s.3hawsfrom.bit
             status:
               type: string
@@ -702,7 +766,13 @@ components:
       description: sorted by
       schema:
         type: string
-        example: updatedAt
+        enum:
+          - updatedAt
+          - _id
+          - title
+          - body
+          - createdAt
+        default: updatedAt
     searchparams:
       in: query
       name: search
