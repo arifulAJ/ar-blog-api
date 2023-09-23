@@ -381,10 +381,6 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  format: int32
-                  example: 1
                 title:
                   type: string
                   example: article title
@@ -399,7 +395,7 @@ paths:
                   example: http://s3.awamor.jeg
                 status:
                   type: string
-                  enum: [darft, published]
+                  enum: [draft, published]
                   example: draft
               required: [title, body, status]
       responses:
@@ -500,13 +496,13 @@ components:
         - type: object
           properties:
             id:
-              type: integer
-              format: int32
-              example: 1
+              type: string
+
+              example: valid id
             authorId:
-              type: integer
-              format: int32
-              example: 1
+              type: string
+
+              example: valid atuhor id
             title:
               type: string
               example: First article
@@ -576,17 +572,17 @@ components:
         - type: object
           properties:
             id:
-              type: integer
-              format: int32
-              example: 1
+              type: string
+
+              example: "65096c2fd1b51ccf2612094a"
             authorId:
-              type: integer
-              format: int32
-              example: 1
+              type: string
+
+              example: "65096c2fd1b51ccf2612094a"
             articleId:
-              type: integer
-              format: int32
-              example: 1
+              type: string
+
+              example: "65096c2fd1b51ccf2612094a"
             body:
               type: string
               format: text
@@ -786,6 +782,6 @@ components:
       required: true
       description: article id
       schema:
-        type: integer
-        format: int32
-        example: 1
+        type: string
+
+        example: "650a365836d4d7d5dad14a2e"

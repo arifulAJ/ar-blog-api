@@ -69,12 +69,16 @@ const middleware = [
 app.use(middleware);
 //auth
 app.use("/api/v1/auth", userrouter);
-// articles
+// articles all kind of route handel this middelware
 app.use("/api/v1", articleRouter);
 
 // health route
 app.get("/health", (_req, res) => {
   res.send("now we can say this is working well if we get this path");
+});
+// root  of the app
+app.get("/", (_req, res) => {
+  res.send("you run your codes sucsessfully");
 });
 
 mongoose
@@ -83,8 +87,6 @@ mongoose
     console.log("Database connected");
     app.listen(port, async () => {
       console.log("i am listening on port ", port);
-      // seedUsers();
-      const users = await user.find({ role: "admin" });
     });
   })
   .catch((e) => {
