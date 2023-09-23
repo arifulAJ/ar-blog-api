@@ -40,7 +40,7 @@ exports.updateArticle = async (req, res, next) => {
       message: "updated successfully",
       updateArticle,
     };
-    res.status(200).json(updateArticle);
+    res.status(200).json(respons);
   } catch (error) {
     console.log(error);
     next(error);
