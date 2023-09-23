@@ -7,6 +7,7 @@ const {
 const {
   createdOrupdatedArticle,
 } = require("../../api/v1/article/controllers/createOrUpdated");
+const { updateArticle } = require("../../api/v1/article/controllers/update");
 
 /**
  * this is article route handellare all the articles related route is here
@@ -30,5 +31,6 @@ router.post(
 router.get("/articles/:id", findOneArticleById);
 
 router.put("/articles/:id", createdOrupdatedArticle);
+router.patch("/articles/:id", updateArticle);
 
 module.exports = router;

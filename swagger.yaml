@@ -431,10 +431,6 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  format: int32
-                  example: 1
                 title:
                   type: string
                   example: article title
@@ -449,7 +445,7 @@ paths:
                   example: http://s3.awamor.jeg
                 status:
                   type: string
-                  enum: [darft, published]
+                  enum: [draft, published]
                   example: draft
 
       responses:

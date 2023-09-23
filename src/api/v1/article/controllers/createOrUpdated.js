@@ -69,7 +69,7 @@ exports.createdOrupdatedArticle = async (req, res, next) => {
     );
     const response = {
       code: updatedArticle.isModified ? 200 : 201,
-      message: "updated successfuly",
+      message: "updated successfully",
       updatedArticle,
     };
     res.status(200).json(response);
