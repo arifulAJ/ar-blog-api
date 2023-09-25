@@ -89,7 +89,6 @@ paths:
           $ref: "#/components/responses/400"
         "500":
           $ref: "#/components/responses/500"
-
   "/auth/signin":
     post:
       description: sing in by credadintail
@@ -479,6 +478,395 @@ paths:
           $ref: "#/components/responses/404"
         "500":
           $ref: "#/components/responses/500"
+  "/comments":
+    get:
+      security:
+        - bearerAuth: []
+      tags: [Comment]
+      description: retrive all comments
+      parameters:
+        - $ref: "#/components/parameters/pageParams"
+        - $ref: "#/components/parameters/limitParams"
+        - $ref: "#/components/parameters/sortTypeParams"
+        - $ref: "#/components/parameters/sortByparamsComment"
+
+      responses:
+        "200":
+          description: return the list of comment
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  comment:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            body:
+                              type: string
+                              example: provide your comment body
+                            author:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: commentId
+                                name:
+                                  type: string
+                                  example: comment author
+                        - $ref: "#/components/schemas/Timestamp"
+                  pagination:
+                    type: object
+                    properties:
+                      prevComment:
+                        type: integer
+                        format: int32
+                        example: 1
+                      nextComment:
+                        type: integer
+                        format: int32
+                        example: 3
+                      limit:
+                        type: integer
+                        format: int32
+                        example: 10
+        "404":
+          $ref: "#/components/responses/404"
+    post:
+      security:
+        - bearerAuth: []
+      tags: [Comment]
+      description: post your comment on the article
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+
+                  example: this is body of article
+                articleId:
+                  type: string
+
+                  example: 650a39ae55e35291c3f17b09
+                status:
+                  type: string
+                  enum: [private, public]
+                  default: public
+
+              required: [body, articleId]
+      responses:
+        "201":
+          description: created successfully
+          content:
+            "application/json":
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: created successfully
+                  body:
+                    $ref: "#/components/schemas/Comment"
+        "401":
+          $ref: "#/components/responses/401"
+        "400":
+          $ref: "#/components/responses/400"
+  "/comments/{id}":
+    patch:
+      # operationId: update comment
+      security:
+        - bearerAuth: []
+      tags: [Comment]
+      description: update your comment
+      parameters:
+        - $ref: "#/components/parameters/commentPathparam"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  example: harry your documentory is relly good
+      responses:
+        "200":
+          description: updated successfully
+          content:
+            "aplication/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: updated successfully
+                  commentData:
+                    $ref: "#/components/schemas/Comment"
+        "404":
+          $ref: "#/components/responses/404"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [Comment]
+      description: delete your article
+      parameters:
+        - $ref: "#/components/parameters/commentPathparam"
+      responses:
+        "204":
+          description: comment delete successfully
+
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
+  "/user":
+    get:
+      security:
+        - bearerAuth: []
+      tags: [User]
+      description: retrive all user only admin can
+      parameters:
+        - $ref: "#/components/parameters/pageParams"
+        - $ref: "#/components/parameters/limitParams"
+        - $ref: "#/components/parameters/sortTypeParams"
+        - $ref: "#/components/parameters/sortByparamsOfuser"
+        - $ref: "#/components/parameters/searchparamsUser"
+      responses:
+        "200":
+          description: retrive all users
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              example: 65029caf16a8aabf893b8bd0
+                            name:
+                              type: string
+                              example: ariful islam
+                            email:
+                              type: string
+                              format: email
+                              example: ariful@example.com
+                            avater:
+                              type: string
+                              format: url
+                              example: "http//arif/avata.png"
+                  pagination:
+                    type: object
+                    properties:
+                      prevPage:
+                        type: integer
+                        format: int32
+                        example: 1
+                      nextPage:
+                        type: integer
+                        format: int32
+                        example: 3
+                      limit:
+                        type: integer
+                        format: int32
+                        example: 10
+        "404":
+          $ref: "#/components/responses/404"
+    post:
+      security:
+        - bearerAuth: []
+      description: creat new user
+      tags: [User]
+      requestBody:
+        content:
+          "aplication/json":
+            schema:
+              $ref: "#/components/schemas/usercreateDTO"
+
+      responses:
+        "201":
+          description: user created successfully
+          content:
+            "aplication/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: created successfully
+                  data:
+                    type: object
+                    properties:
+                      access_token:
+                        type: string
+                        example: ksdlfjlsdjfoisfuiowjfkjsdfjlkjfoism0 sdojfosdjf
+                  link:
+                    type: object
+                    properties:
+                      prevuser:
+                        type: string
+                        format: url
+                        example: "http//api/v1/user/prevUser"
+                      nextUser:
+                        type: string
+                        format: url
+                        example: "http//api/v1/user/nextUser"
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+  "/user/{id}":
+    put:
+      security:
+        - bearerAuth: []
+      summary: update or create
+      tags: [User]
+      description: update user or create user
+      requestBody:
+        content:
+          "aplication/json":
+            schema:
+              $ref: "#/components/schemas/usercreateDTO"
+
+      responses:
+        "200":
+          description: creat or update user
+          content:
+            "aplication/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200 or 201
+                  message:
+                    type: string
+                    example: updated or created successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 65029caf16a8aabf893b8bd8
+                      name:
+                        type: string
+                        example: md ariful islam
+                      email:
+                        type: string
+                        format: email
+                        example: ariful@example.com
+                      avater:
+                        type: string
+                        format: url
+                        example: "http//avater/sdfjj"
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+    patch:
+      security:
+        - bearerAuth: []
+      tags: [User]
+      description: update your user accounts
+      summary: update user
+      requestBody:
+        content:
+          "aplication/json":
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: md ariful islam
+                email:
+                  type: string
+                  format: email
+                  example: ariful@example.com
+                password:
+                  type: string
+                  format: password
+                  example: pass123
+                avater:
+                  type: string
+                  format: url
+                  example: "http//avater/min.png"
+      responses:
+        "200":
+          description: creat or update user
+          content:
+            "aplication/json":
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 200
+                  message:
+                    type: string
+                    example: updated or created successfully
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 65029caf16a8aabf893b8bd8
+                      name:
+                        type: string
+                        example: md ariful islam
+                      email:
+                        type: string
+                        format: email
+                        example: ariful@example.com
+                      avater:
+                        type: string
+                        format: url
+                        example: "http//avater/sdfjj"
+        "400":
+          $ref: "#/components/responses/400"
+        "404":
+          $ref: "#/components/responses/404"
+    delete:
+      security:
+        - bearerAuth: []
+      tags: [User]
+      description: delete user
+      summary: delete user
+      parameters:
+        - $ref: "#/components/parameters/commentPathparam"
+      responses:
+        "204":
+          description: comment delete successfully
+
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          $ref: "#/components/responses/404"
 
 components:
   securitySchemes:
@@ -642,7 +1030,25 @@ components:
         - limit
         - totalpage
         - totalitems
-
+    usercreateDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: md ariful islam
+        email:
+          type: string
+          format: email
+          example: ariful@example.com
+        password:
+          type: string
+          format: password
+          example: pass123
+        avater:
+          type: string
+          format: url
+          example: "http//avater/min.png"
+      required: [name, email, password]
   responses:
     "500":
       description: Internal Server Error
@@ -751,7 +1157,6 @@ components:
       schema:
         type: string
         enum: [acc, dec]
-
     sortByparams:
       in: query
       name: sort_by
@@ -765,6 +1170,28 @@ components:
           - body
           - createdAt
         default: updatedAt
+    sortByparamsOfuser:
+      in: query
+      name: sort_by
+      description: sorted by
+      schema:
+        type: string
+        enum:
+          - updatedAt
+          - _id
+          - createdAt
+        default: updatedAt
+    sortByparamsComment:
+      in: query
+      name: sort_by
+      description: sorted by
+      schema:
+        type: string
+        enum:
+          - updatedAt
+
+          - createdAt
+        default: updatedAt
     searchparams:
       in: query
       name: search
@@ -772,11 +1199,27 @@ components:
       schema:
         type: string
         example: title
+    searchparamsUser:
+      in: query
+      name: search
+      description: search by name or email
+      schema:
+        type: string
+        example: name
     idpathparams:
       in: path
       name: id
       required: true
       description: article id
+      schema:
+        type: string
+
+        example: "650a365836d4d7d5dad14a2e"
+    commentPathparam:
+      in: path
+      name: id
+      required: true
+      description: comment id
       schema:
         type: string
 

@@ -14,7 +14,6 @@ exports.deleteArticle = async (req, res, next) => {
   try {
     const articleId = req.params.id;
     const authenticatedUserId = req.user.id;
-    console.log(articleId);
 
     if (!mongoose.Types.ObjectId.isValid(articleId)) {
       return res.status(400).json({ message: "invalid article ID " });

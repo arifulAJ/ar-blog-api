@@ -12,6 +12,8 @@ const MongoDBStore = require("connect-mongodb-session")(session);
 const userrouter = require("./routes/auth/index");
 // router of articles
 const articleRouter = require("./routes/article/articlesRoutes");
+//router of comments
+const commentRoute = require("./routes/comment/commentRouter");
 // middleware
 const { bindUserWithrequest } = require("./middleware/authMieeleware");
 const setLocals = require("./middleware/setLocals");
@@ -67,10 +69,20 @@ const middleware = [
   setLocals(),
 ];
 app.use(middleware);
+
+/**
+ * for the application of version 1.0.0
+ * article
+ * comment
+ * user
+ * every thing are mange from here
+ */
 //auth
 app.use("/api/v1/auth", userrouter);
 // articles all kind of route handel this middelware
 app.use("/api/v1", articleRouter);
+// commnet all kind of route handle hare
+app.use("/api/v1", commentRoute);
 
 // health route
 app.get("/health", (_req, res) => {
