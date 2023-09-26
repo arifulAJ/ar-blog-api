@@ -699,7 +699,7 @@ paths:
       tags: [User]
       requestBody:
         content:
-          "aplication/json":
+          "application/json":
             schema:
               $ref: "#/components/schemas/usercreateDTO"
 
@@ -748,7 +748,7 @@ paths:
       description: update user or create user
       requestBody:
         content:
-          "aplication/json":
+          "application/json":
             schema:
               $ref: "#/components/schemas/usercreateDTO"
 
@@ -796,7 +796,7 @@ paths:
       summary: update user
       requestBody:
         content:
-          "aplication/json":
+          "application/json":
             schema:
               type: object
               properties:
