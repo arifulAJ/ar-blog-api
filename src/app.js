@@ -9,11 +9,13 @@ const port = process.env.PORT || 4000;
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session);
 // router of user
-const userrouter = require("./routes/auth/index");
+const userrouterAuth = require("./routes/auth/index");
 // router of articles
 const articleRouter = require("./routes/article/articlesRoutes");
 //router of comments
 const commentRoute = require("./routes/comment/commentRouter");
+// user router
+const userRoutesPath = require("./routes/user/userRoute");
 // middleware
 const { bindUserWithrequest } = require("./middleware/authMieeleware");
 const setLocals = require("./middleware/setLocals");
@@ -58,7 +60,7 @@ const middleware = [
   session({
     secret: process.env.SECRET_KEY || "SECRET_KEY",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
       maxAge: 1000 * 60 * 60 * 2,
     },
@@ -78,11 +80,13 @@ app.use(middleware);
  * every thing are mange from here
  */
 //auth
-app.use("/api/v1/auth", userrouter);
+app.use("/api/v1/auth", userrouterAuth);
 // articles all kind of route handel this middelware
 app.use("/api/v1", articleRouter);
 // commnet all kind of route handle hare
 app.use("/api/v1", commentRoute);
+// users all route handel here
+app.use("/api/v1", userRoutesPath);
 
 // health route
 app.get("/health", (_req, res) => {

@@ -1,4 +1,3 @@
-const { response } = require("express");
 const Comment = require("../../../../model/Comment");
 
 exports.findComments = async (req, res, next) => {

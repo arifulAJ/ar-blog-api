@@ -21,7 +21,7 @@ exports.signupGetController = (req, res, next) => {
 
 exports.signupPostController = async (req, res, next) => {
   let errors = validationResult(req).formatWith(errorFormate);
-  console.log(errors);
+
   if (!errors.isEmpty()) {
     let data = errors.mapped();
 
@@ -42,24 +42,26 @@ exports.signupPostController = async (req, res, next) => {
       password: hashPassword,
     });
     let createUser = await user.save();
+    // Storing user-related data in the session
+    req.session.userId = createUser._id; // Store the user's unique identifier
+    req.session.userName = user.name; // Store the user's name
     console.log(createUser);
+    const respons = {
+      code: 201,
+      message: "signup successfully",
+      data: { token: "sdkjflsdflksjfkljsdklf" },
+      links: {
+        self: req.url,
+        signin: "/auth/signin",
+      },
+    };
+    res.status(201).json(respons);
   } catch (e) {
     console.log(e);
     next(e);
   }
 
   // respons
-
-  const respons = {
-    code: 201,
-    message: "signup successfully",
-    data: { token: "sdkjflsdflksjfkljsdklf" },
-    links: {
-      self: req.url,
-      signin: "/auth/signin",
-    },
-  };
-  res.status(201).json(respons);
 };
 
 /**
