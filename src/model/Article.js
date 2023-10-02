@@ -12,6 +12,10 @@ const articleSchema = new Schema(
       type: String,
       required: true,
     },
+    tags: {
+      type: String,
+      required: true,
+    },
     cover: String,
     // author: { type: Schema.ObjectId, ref: "User", name: String },
     author: {

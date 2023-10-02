@@ -1,5 +1,6 @@
-const User = require("../../src/model/User");
 const { body } = require("express-validator");
+const User = require("../../src/model/User");
+
 module.exports = [
   body("name")
     .isLength({ min: 2, max: 20 })
@@ -11,21 +12,11 @@ module.exports = [
       }
     })
     .trim(),
-  body("email")
-    .isEmail()
-    .withMessage("pleace provide a valid email")
-    .custom(async (email) => {
-      let user = await User.findOne({ email });
-      if (user) {
-        return Promise.reject("email already used");
-      }
-    })
-    .normalizeEmail(),
   body("password")
     .isLength({ min: 5 })
     .withMessage("your password must have more then five char"),
 
-  body("avater")
+  body("avatar")
     .isURL()
     .withMessage("Please provide a valid URL for the avatar"),
 ];

@@ -10,6 +10,10 @@ const userSchmeas = new Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    avatar: {
+      type: String,
+    },
+
     status: {
       type: String,
       enum: ["pending", "approved", "declined", "blocked"],

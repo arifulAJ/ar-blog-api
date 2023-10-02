@@ -8,6 +8,10 @@ module.exports = [
     .isLength({ min: 20 })
     .withMessage("body should have more then 20 char")
     .trim(),
+  body("tags")
+    .isLength({ min: 2, max: 20 })
+    .withMessage("tage should have more then 2 and less then 20 char")
+    .trim(),
   body("cover")
     .optional() // Make the "cover" field optional
     .isURL() // Allow any format if provided

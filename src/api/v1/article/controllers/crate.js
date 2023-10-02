@@ -20,7 +20,7 @@ exports.createArticle = async (req, res, next) => {
       data,
     });
   }
-  const { title, body, cover } = req.body;
+  const { title, body, cover, tags } = req.body;
 
   if (!req.user) {
     return res.status(404).json({ message: "you should have requierd signin" });
@@ -32,8 +32,10 @@ exports.createArticle = async (req, res, next) => {
       title,
       body,
       cover,
+      tags,
       author: { id, name },
     });
+    console.log(article);
     let createNewArticle = await article.save();
 
     // responses ------
