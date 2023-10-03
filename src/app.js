@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require('cors');
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDoc = YAML.load("./swagger.yaml");
@@ -55,6 +56,12 @@ const middleware = [
   express.json(),
   OpenApiValidator.middleware({
     apiSpec: "./swagger.yaml",
+  }),
+  // Allow requests from http://localhost:3000 (your Next.js app)
+  cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // If your app uses cookies or authentication
   }),
   customeMiddleware,
   session({

@@ -35,7 +35,7 @@ exports.createArticle = async (req, res, next) => {
       tags,
       author: { id, name },
     });
-    console.log(article);
+  
     let createNewArticle = await article.save();
 
     // responses ------
@@ -54,6 +54,6 @@ exports.createArticle = async (req, res, next) => {
     next();
   } catch (e) {
     console.log(e);
-    next();
+    next(e);
   }
 };
