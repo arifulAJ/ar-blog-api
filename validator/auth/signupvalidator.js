@@ -25,7 +25,5 @@ module.exports = [
     .isLength({ min: 5 })
     .withMessage("your password must have more then five char"),
 
-  body("avater")
-    .isURL()
-    .withMessage("Please provide a valid URL for the avatar"),
+  // body("avater").isURL().withMessage("Please provide a valid URL for the ava"),
 ];

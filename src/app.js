@@ -1,15 +1,14 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require('cors');
+const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDoc = YAML.load("./swagger.yaml");
 const OpenApiValidator = require("express-openapi-validator");
+const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 4000;
-const session = require("express-session");
-const MongoDBStore = require("connect-mongodb-session")(session);
-// router of user
+
 const userrouterAuth = require("./routes/auth/index");
 // router of articles
 const articleRouter = require("./routes/article/articlesRoutes");
@@ -18,11 +17,12 @@ const commentRoute = require("./routes/comment/commentRouter");
 // user router
 const userRoutesPath = require("./routes/user/userRoute");
 // middleware
-const { bindUserWithrequest } = require("./middleware/authMieeleware");
-const setLocals = require("./middleware/setLocals");
+const {
+  bindUserWithRequest,
 
-// users
-const user = require("../src/model/User");
+  isAuthenticatedUser,
+} = require("./middleware/authMieeleware");
+const setLocals = require("./middleware/setLocals");
 
 //express app
 
@@ -47,37 +47,28 @@ connectionURL = connectionURL.replace("<username>", process.env.DB_USERNAME);
 connectionURL = connectionURL.replace("<password>", process.env.DB_PASSWORD);
 connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUERY}`;
 
-const store = new MongoDBStore({
-  uri: connectionURL,
-  collection: "sessions",
-  expires: 1000 * 60 * 60 * 2,
-});
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Allow credentials (cookies)
+  })
+);
 const middleware = [
   express.json(),
   OpenApiValidator.middleware({
     apiSpec: "./swagger.yaml",
   }),
   // Allow requests from http://localhost:3000 (your Next.js app)
-  cors({
-    origin: 'http://localhost:3000',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // If your app uses cookies or authentication
-  }),
-  customeMiddleware,
-  session({
-    secret: process.env.SECRET_KEY || "SECRET_KEY",
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 2,
-    },
-    store: store,
-  }),
-  bindUserWithrequest(),
 
-  setLocals(),
+  customeMiddleware,
+  cookieParser(),
+  // bindUserWithRequest(),
+  // isAuthenticatedUser,
 ];
+// app.use(bodyParser.json());
 app.use(middleware);
+// Add this middleware to handle OPTIONS requests
 
 /**
  * for the application of version 1.0.0
@@ -94,6 +85,8 @@ app.use("/api/v1", articleRouter);
 app.use("/api/v1", commentRoute);
 // users all route handel here
 app.use("/api/v1", userRoutesPath);
+
+// Add the OPTIONS request middleware to handle all routes that need it
 
 // health route
 app.get("/health", (_req, res) => {

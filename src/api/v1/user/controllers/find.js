@@ -9,14 +9,14 @@ const User = require("../../../../model/User");
 exports.findUsers = async (req, res, next) => {
   try {
     // Check if the user is an admin
-    if (req?.user?.role !== "admin") {
-      return res.status(403).json({
-        message: "You do not have permission to access this resource.",
-      });
-    }
+    // if (req?.user?.role !== "admin") {
+    //   return res.status(403).json({
+    //     message: "You do not have permission to access this resource.",
+    //   });
+    // }
     const {
       page = 1,
-      limit = 5,
+      limit,
       sort_by = "updetedAt",
       sort_type = "dec",
       search,
@@ -24,7 +24,7 @@ exports.findUsers = async (req, res, next) => {
     // Calculate the skip value based on the page and limit
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const query = {};
-
+    const parsedLimit = limit ? parseInt(limit, 10) : undefined;
     // Search query
     if (search) {
       // Case-insensitive search in the title field
@@ -39,7 +39,8 @@ exports.findUsers = async (req, res, next) => {
     const retrieveAllUsers = await User.find(query)
       .skip(skip)
       .sort(sortOptions)
-      .limit(parseInt(limit));
+      .limit(parsedLimit);
+
     const respons = {
       code: 200,
       retrieveAllUsers,

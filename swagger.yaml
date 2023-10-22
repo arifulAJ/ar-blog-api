@@ -182,8 +182,46 @@ paths:
                     type: string
                     description: Error message indicating an internal server error.
                 description: sing in by credadintail
+  "/auth/token":
+    get:
+      summary: Retrieve Signin Information
+      tags:
+        - Auth
+      description: Retrieve information about the signin process.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A success message.
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message indicating that the resource was not found.
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message indicating an internal server error.
+                description: sing in by credadintail
   "/auth/logout":
-    post:
+    get:
       summary: Logout
       tags:
         - Auth
@@ -644,13 +682,14 @@ paths:
           $ref: "#/components/responses/404"
   "/user":
     get:
-      security:
-        - bearerAuth: []
+      # security:
+      #   - bearerAuth: []
       tags: [User]
-      description: retrive all user only admin can
+      # description: retrive all user only admin can
       parameters:
         - $ref: "#/components/parameters/pageParams"
-        - $ref: "#/components/parameters/limitParams"
+        - $ref: "#/components/parameters/limitParamsUser"
+
         - $ref: "#/components/parameters/sortTypeParams"
         - $ref: "#/components/parameters/sortByparamsOfuser"
         - $ref: "#/components/parameters/searchparamsUser"
@@ -748,6 +787,60 @@ paths:
         "404":
           $ref: "#/components/responses/404"
   "/user/{id}":
+    get:
+      # security:
+      #   - bearerAuth: []
+      tags: [User]
+      description: get user by id
+      summary: user by id
+      parameters:
+        - $ref: "#/components/parameters/userpathParams"
+
+      responses:
+        "200":
+          description: retrive all users
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            id:
+                              type: string
+                              example: 65029caf16a8aabf893b8bd0
+                            name:
+                              type: string
+                              example: ariful islam
+                            email:
+                              type: string
+                              format: email
+                              example: ariful@example.com
+                            avatar:
+                              type: string
+                              format: url
+                              example: "http//arif/avata.png"
+                  pagination:
+                    type: object
+                    properties:
+                      prevPage:
+                        type: integer
+                        format: int32
+                        example: 1
+                      nextPage:
+                        type: integer
+                        format: int32
+                        example: 3
+                      limit:
+                        type: integer
+                        format: int32
+                        example: 10
+        "404":
+          $ref: "#/components/responses/404"
     patch:
       security:
         - bearerAuth: []
@@ -838,6 +931,10 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    # bearerAuth:
+    #   type: http
+    #   scheme: bearer
+    #   bearerFormat: JWT
   schemas:
     Articles:
       allOf:
@@ -1114,6 +1211,15 @@ components:
         format: int32
         example: 5
       required: true
+    limitParamsUser:
+      in: query
+      name: limit
+      description: limit the page
+      schema:
+        type: integer
+        format: int32
+        example: 5
+
     sortTypeParams:
       in: query
       name: sort_type

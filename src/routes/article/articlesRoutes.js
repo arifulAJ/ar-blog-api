@@ -9,6 +9,10 @@ const {
 } = require("../../api/v1/article/controllers/createOrUpdated");
 const { updateArticle } = require("../../api/v1/article/controllers/update");
 const { deleteArticle } = require("../../api/v1/article/controllers/delete");
+const {
+  findAllArticlesNoParams,
+} = require("../../api/v1/article/controllers/findAllArticle");
+const { isAuthenticatedUser } = require("../../middleware/authMieeleware");
 
 /**
  * this is article route handellare all the articles related route is here
@@ -20,11 +24,14 @@ const { deleteArticle } = require("../../api/v1/article/controllers/delete");
  * delete article,
  */
 const router = require("express").Router();
+//find article withour params
+router.get("/articles/all", findAllArticlesNoParams);
 
+//find article with params
 router.get("/articles", findAllArticles);
 router.post(
   "/articles",
-
+  isAuthenticatedUser,
   createArticleValidator,
   createArticle
 );

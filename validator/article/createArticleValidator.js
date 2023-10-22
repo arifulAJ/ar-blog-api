@@ -53,10 +53,5 @@ module.exports = [
       }),
 ];
 
-// Helper function to check if a URL is valid
-// function isValidURL(url) {
-//   // Implement your URL validation logic here, e.g., using regular expressions
-//   const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
-//   return urlRegex.test(url);
-// }
+
 
