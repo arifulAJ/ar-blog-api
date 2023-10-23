@@ -49,7 +49,7 @@ connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUE
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.DOMAIN,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // Allow credentials (cookies)
   })
