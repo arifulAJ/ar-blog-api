@@ -54,6 +54,7 @@ exports.bindUserWithRequest = () => {
 // };
 exports.isAuthenticatedUser = (req, res, next) => {
   const authHeader = req.header("Authorization");
+  console.log(authHeader, "this header ");
 
   if (!authHeader) {
     return res.status(401).json({ message: "No token provided" });
