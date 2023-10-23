@@ -63,6 +63,7 @@ exports.signupPostController = async (req, res) => {
     };
     res.cookie("token", token, {
       httpOnly: true,
+      secure: true, // Set to true for HTTPS
     });
     res.status(201).json(respons);
   } catch (e) {
@@ -138,6 +139,7 @@ exports.signupPostController = async (req, res) => {
  */
 exports.signinGetController = async (req, res) => {
   const token = req?.cookies?.token;
+  console.log(token, "this is the token controller");
   if (!token) {
     return;
   }
@@ -204,6 +206,7 @@ exports.signinPostController = async (req, res) => {
     };
     res.cookie("token", token, {
       httpOnly: true,
+      secure: true, // Set to true for HTTPS
     });
 
     res.status(200).json(respons);
@@ -299,7 +302,7 @@ exports.logoutController = (req, res) => {
   try {
     if (req.cookies.token) {
       // Clear the token cookie if it exists
-      res.clearCookie("token", { httpOnly: true });
+      res.clearCookie("token", { httpOnly: true, secure: true });
     } else {
       return;
     }
