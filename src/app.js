@@ -46,14 +46,62 @@ let connectionURL = process.env.DB_CONNECTION_URL;
 connectionURL = connectionURL.replace("<username>", process.env.DB_USERNAME);
 connectionURL = connectionURL.replace("<password>", process.env.DB_PASSWORD);
 connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUERY}`;
+// Set allowed origins, including your Vercel-hosted frontend
+// const allowedOrigins = [
+//   "http://localhost:3000", // For local development
+//   "https://aj-blog-web-app.vercel.app", // Your Vercel-hosted frontend
+// ];
 
-app.use(
-  cors({
-    origin: process.env.DOMAIN,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    credentials: true, // Allow credentials (cookies)
-  })
-);
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true, // Allow credentials (cookies)
+//   methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
+//   allowdHeaders: [
+//     "Access-Controle-Allow-Origin",
+//     "Authrization",
+//     "Content-Type",
+//   ],
+// };
+// app.use(cors(corsOptions));
+const allowedOrigins = [
+  "http://localhost:3000", // For local development
+  "https://aj-blog-web-app.vercel.app", // Your Vercel-hosted frontend
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Allow credentials (cookies)
+  methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
+  allowedHeaders: [
+    // Corrected typo here
+    "Access-Control-Allow-Origin",
+    "Authorization",
+    "Content-Type",
+  ],
+};
+
+app.use(cors(corsOptions));
+
+// app.use(
+//   cors({
+//     // origin: "http://localhost:3000",
+//     origin: process.env.DOMAIN,
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true, // Allow credentials (cookies)
+//   })
+// );
 const middleware = [
   express.json(),
   OpenApiValidator.middleware({

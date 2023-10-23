@@ -43,7 +43,7 @@ exports.signupPostController = async (req, res) => {
     });
 
     // Set the 'Access-Control-Allow-Credentials' header to 'true' in the response
-    res.header("Access-Control-Allow-Credentials", "true");
+    // res.header("Access-Control-Allow-Credentials", "true");
     let createUser = await user.save();
     // Storing user-related data in the session
     const token = jwt.sign(
