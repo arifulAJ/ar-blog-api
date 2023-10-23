@@ -85,7 +85,11 @@ const corsOptions = {
   credentials: true, // Allow credentials (cookies)
   methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
 };
-
+// const corsOptions = {
+//   origin: "http://localhost:3000", // For local development
+//   credentials: true, // Allow credentials (cookies)
+//   // ... other CORS options
+// };
 app.use(cors(corsOptions));
 
 // app.use(

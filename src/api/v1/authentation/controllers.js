@@ -43,7 +43,7 @@ exports.signupPostController = async (req, res) => {
     });
 
     // Set the 'Access-Control-Allow-Credentials' header to 'true' in the response
-    // res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Credentials", "true");
     let createUser = await user.save();
     // Storing user-related data in the session
     const token = jwt.sign(
@@ -63,7 +63,7 @@ exports.signupPostController = async (req, res) => {
     };
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // Set to true for HTTPS
+      // Set to true for HTTPS
     });
     res.status(201).json(respons);
   } catch (e) {
@@ -151,7 +151,7 @@ exports.signinGetController = async (req, res) => {
 };
 exports.getTokenController = async (req, res) => {
   const token = req?.cookies?.token;
-
+  console.log(req.cookies, "get token");
   if (!token) {
     return res.status(404).json({ message: "Token not found" });
   }
@@ -207,6 +207,7 @@ exports.signinPostController = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Set to true for HTTPS
+      domain: "https://aj-blog-web-app.vercel.app",
     });
 
     res.status(200).json(respons);
@@ -302,7 +303,7 @@ exports.logoutController = (req, res) => {
   try {
     if (req.cookies.token) {
       // Clear the token cookie if it exists
-      res.clearCookie("token", { httpOnly: true, secure: true });
+      res.clearCookie("token", { httpOnly: true });
     } else {
       return;
     }
