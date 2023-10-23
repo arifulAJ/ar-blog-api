@@ -83,7 +83,7 @@ const corsOptions = {
     }
   },
   credentials: true, // Allow credentials (cookies)
-  methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
+  // methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
 };
 // const corsOptions = {
 //   origin: "http://localhost:3000", // For local development
