@@ -88,7 +88,7 @@ connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUE
 //   methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
 // };
 const corsOptions = {
-  origin: "http://localhost:3000", // For local development
+  origin: "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app", // For local development
   credentials: true, // Allow credentials (cookies)
   methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
   // ... other CORS options
