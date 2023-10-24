@@ -43,7 +43,7 @@ exports.signupPostController = async (req, res) => {
     });
 
     // Set the 'Access-Control-Allow-Credentials' header to 'true' in the response
-    res.header("Access-Control-Allow-Credentials", "true");
+    // res.header("Access-Control-Allow-Credentials", "true");
     let createUser = await user.save();
     // Storing user-related data in the session
     const token = jwt.sign(
@@ -64,8 +64,8 @@ exports.signupPostController = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Set to true for HTTPS
-      domain:
-        "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
+      // domain:
+      //   "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
     });
     res.status(201).json(respons);
   } catch (e) {
@@ -209,8 +209,8 @@ exports.signinPostController = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Set to true for HTTPS
-      domain:
-        "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
+      // domain:
+      //   "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
     });
 
     res.status(200).json(respons);
