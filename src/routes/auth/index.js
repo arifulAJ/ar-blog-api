@@ -23,7 +23,7 @@ router.post(
   signupPostController
 );
 router.get("/signin", signinGetController);
-router.get("/token", getTokenController);
+router.post("/token", getTokenController);
 router.post(
   "/signin",
 

@@ -183,7 +183,7 @@ paths:
                     description: Error message indicating an internal server error.
                 description: sing in by credadintail
   "/auth/token":
-    get:
+    post:
       summary: Retrieve Signin Information
       tags:
         - Auth

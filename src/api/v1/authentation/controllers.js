@@ -210,7 +210,7 @@ exports.signinPostController = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Set to true for HTTPS
-      domain: "aj-blog-web-app.vercel.app",
+      // domain: "aj-blog-web-app.vercel.app",
     });
 
     res.status(200).json(respons);
