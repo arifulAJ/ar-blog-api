@@ -61,7 +61,7 @@ exports.signupPostController = async (req, res) => {
         signin: "/auth/signin",
       },
     };
-    res.cookie("_vercel_jwt", token, {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Set to true for HTTPS
       // domain: "aj-blog-web-app.vercel.app",
@@ -207,7 +207,7 @@ exports.signinPostController = async (req, res) => {
         signin: "/auth/signin",
       },
     };
-    res.cookie("_vercel_jwt", token, {
+    res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Set to true for HTTPS
       // domain: "aj-blog-web-app.vercel.app",
