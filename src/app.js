@@ -46,67 +46,17 @@ let connectionURL = process.env.DB_CONNECTION_URL;
 connectionURL = connectionURL.replace("<username>", process.env.DB_USERNAME);
 connectionURL = connectionURL.replace("<password>", process.env.DB_PASSWORD);
 connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUERY}`;
-// Set allowed origins, including your Vercel-hosted frontend
-// const allowedOrigins = [
-//   "http://localhost:3000", // For local development
-//   "https://aj-blog-web-app.vercel.app", // Your Vercel-hosted frontend
-// ];
 
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   credentials: true, // Allow credentials (cookies)
-//   methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
-//   allowdHeaders: [
-//     "Access-Controle-Allow-Origin",
-//     "Authrization",
-//     "Content-Type",
-//   ],
-// };
-// app.use(cors(corsOptions));
-// const allowedOrigins = [
-//   "http://localhost:3000", // For local development
-//   "https://aj-blog-web-app.vercel.app", // Your Vercel-hosted frontend
-//   "https://aj-blog-web-1iktk614f-ariful-islams-projects-1e7ef33d.vercel.app",
-// ];
+const cors = require("cors");
 
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//       console.log(origin);
-//     } else {
-//       callback(new Error("Not allowed by CORS"));
-//     }
-//   },
-//   credentials: true, // Allow credentials (cookies)
-//   methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
-// };
 const corsOptions = {
-  origin: "https://aj-blog-web-app.vercel.app", // For local development
-  credentials: true, // Allow credentials (cookies)
+  origin: "https://aj-blog-web-app.vercel.app",
+  credentials: true,
   methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
   // ... other CORS options
 };
+
 app.use(cors(corsOptions));
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://aj-blog-web-app.vercel.app"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-});
 // app.use(
 //   cors({
 //     // origin: "http://localhost:3000",
