@@ -50,7 +50,7 @@ connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUE
 const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true,
-  methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
+  // methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
   // ... other CORS options
 };
 
