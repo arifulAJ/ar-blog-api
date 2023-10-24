@@ -63,7 +63,7 @@ exports.signupPostController = async (req, res) => {
     };
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // Set to true for HTTPS
+      secure: false, // Set to true for HTTPS
       // domain: "aj-blog-web-app.vercel.app",
       // domain:
       //   "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
@@ -209,7 +209,7 @@ exports.signinPostController = async (req, res) => {
     };
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true, // Set to true for HTTPS
+      secure: false, // Set to true for HTTPS
       // domain: "aj-blog-web-app.vercel.app",
     });
 
