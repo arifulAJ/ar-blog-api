@@ -47,8 +47,6 @@ connectionURL = connectionURL.replace("<username>", process.env.DB_USERNAME);
 connectionURL = connectionURL.replace("<password>", process.env.DB_PASSWORD);
 connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUERY}`;
 
-const cors = require("cors");
-
 const corsOptions = {
   origin: "https://aj-blog-web-app.vercel.app",
   credentials: true,
