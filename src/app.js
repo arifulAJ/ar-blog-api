@@ -69,29 +69,35 @@ connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUE
 //   ],
 // };
 // app.use(cors(corsOptions));
-const allowedOrigins = [
-  "http://localhost:3000", // For local development
-  "https://aj-blog-web-app.vercel.app", // Your Vercel-hosted frontend
-];
+// const allowedOrigins = [
+//   "http://localhost:3000", // For local development
+//   "https://aj-blog-web-app.vercel.app", // Your Vercel-hosted frontend
+//   "https://aj-blog-web-1iktk614f-ariful-islams-projects-1e7ef33d.vercel.app",
+// ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true, // Allow credentials (cookies)
-  // methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
-};
 // const corsOptions = {
-//   origin: "http://localhost:3000", // For local development
+//   origin: function (origin, callback) {
+//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+//       callback(null, true);
+//       console.log(origin);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
 //   credentials: true, // Allow credentials (cookies)
-//   // ... other CORS options
+//   methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
 // };
+const corsOptions = {
+  origin: "http://localhost:3000", // For local development
+  credentials: true, // Allow credentials (cookies)
+  methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
+  // ... other CORS options
+};
 app.use(cors(corsOptions));
-
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
 // app.use(
 //   cors({
 //     // origin: "http://localhost:3000",
