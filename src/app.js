@@ -7,7 +7,7 @@ const YAML = require("yamljs");
 const swaggerDoc = YAML.load("./swagger.yaml");
 const OpenApiValidator = require("express-openapi-validator");
 const cookieParser = require("cookie-parser");
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 8080;
 
 const userrouterAuth = require("./routes/auth/index");
 // router of articles
