@@ -178,7 +178,7 @@ exports.logoutController = (req, res) => {
   try {
     if (req.cookies.token) {
       // Clear the token cookie if it exists
-      res.clearCookie("token", { httpOnly: true });
+      res.clearCookie("token", { httpOnly: true, path: "/api/v1" });
     }
 
     // Send the response for a successful logout
