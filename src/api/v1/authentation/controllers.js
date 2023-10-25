@@ -219,7 +219,7 @@ exports.signinPostController = async (req, res) => {
       path: "/api/v1",
       secure: false, // For development; set to true in production
       httpOnly: true,
-      // sameSite: "Lax", // Or 'Strict', as appropriate
+      sameSite: "none", // Or 'Strict', as appropriate
     });
 
     res.status(200).json(respons);
