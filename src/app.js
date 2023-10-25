@@ -78,7 +78,10 @@ const middleware = [
 // app.use(bodyParser.json());
 app.use(middleware);
 // Add this middleware to handle OPTIONS requests
-
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
+});
 /**
  * for the application of version 1.0.0
  * article

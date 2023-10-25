@@ -61,12 +61,19 @@ exports.signupPostController = async (req, res) => {
         signin: "/auth/signin",
       },
     };
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: false, // Set to true for HTTPS
+    //   domain: ".localhost",
+    //   // domain:
+    //   //   "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
+    // });
     res.cookie("token", token, {
+      domain: "ar-blog-api.onrender.com",
+      path: "/api/v1",
+      secure: false, // Temporarily set to false during development
       httpOnly: true,
-      secure: false, // Set to true for HTTPS
-      domain: ".localhost",
-      // domain:
-      //   "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
+      sameSite: "None",
     });
     res.status(201).json(respons);
   } catch (e) {
