@@ -61,16 +61,10 @@ exports.signupPostController = async (req, res) => {
         signin: "/auth/signin",
       },
     };
-    // res.cookie("token", token, {
-    //   httpOnly: true,
-    //   secure: false, // Set to true for HTTPS
-    //   domain: ".localhost",
-    //   // domain:
-    //   //   "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
-    // });
+
     res.cookie("token", token, {
       domain: "ar-blog-api.onrender.com",
-      path: "/api/v1",
+
       secure: true, // Use true in a production environment when you have HTTPS
       httpOnly: true,
       sameSite: "none", // Ensure it's "none" for cross-origin requests
@@ -82,64 +76,6 @@ exports.signupPostController = async (req, res) => {
 
   // respons
 };
-
-// exports.signupPostController = async (req, res) => {
-//   const errors = validationResult(req).formatWith(errorFormate);
-
-//   if (!errors.isEmpty()) {
-//     const data = errors.mapped();
-
-//     return res.status(409).json({
-//       code: 400,
-//       message: "bad request",
-//       data,
-//     });
-//   }
-
-//   const { name, email, password } = req.body;
-
-//   try {
-//     let hashPassword = await bcrypt.hash(password, 11);
-
-//     let user = new User({
-//       name,
-//       email,
-//       password: hashPassword,
-//     });
-
-//     let createUser = await user.save();
-
-//     // Generate a JWT token in "Bearer" format
-//     const token = jwt.sign(
-//       { userId: createUser._id, userName: createUser.name },
-//       process.env.JWT_LOGIN_TOKEN,
-//       { expiresIn: "1d" }
-//     );
-
-//     // Create the response object
-//     const response = {
-//       code: 201,
-//       message: "signup successfully",
-//       data: { token }, // Format the token as "Bearer {token}"
-//       links: {
-//         self: req.url,
-//         signin: "/auth/signin",
-//       },
-//     };
-
-//     // Set the HTTP-only cookie for the token
-//     res.cookie("token", token, {
-//       httpOnly: true,
-//     });
-
-//     // Send the response with the "Bearer" token
-//     res.status(201).json(response);
-//   } catch (e) {
-//     console.error(e.message);
-//     // Handle any errors that occur during token generation or user creation
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// };
 
 /**
  * signin get method  controller for profile get
@@ -215,7 +151,7 @@ exports.signinPostController = async (req, res) => {
       },
     };
     res.cookie("token", token, {
-      domain: "aj-blog-web-app.vercel.app",
+      domain: "ar-blog-api.onrender.com",
       // path: "/api/v1",
       secure: true, // Use true in a production environment when you have HTTPS
       httpOnly: true,
@@ -230,59 +166,6 @@ exports.signinPostController = async (req, res) => {
     console.log(e.message);
   }
 };
-// exports.signinPostController = async (req, res) => {
-//   const errors = validationResult(req).formatWith(errorFormate);
-//   if (!errors.isEmpty()) {
-//     return res.status(400).json({ errors: errors.array() });
-//   }
-
-//   const { email, password } = req.body;
-
-//   try {
-//     let user = await User.findOne({ email });
-
-//     if (!user) {
-//       return res.status(401).json({ message: "Authentication failed" });
-//     }
-
-//     // Verify the password
-//     const passwordMatch = await bcrypt.compare(password, user.password);
-
-//     if (!passwordMatch) {
-//       return res.status(401).json({ message: "Authentication failed" });
-//     }
-
-//     // Generate a JWT token for the user
-//     const token = jwt.sign(
-//       { userId: user._id, userName: user.name },
-//       process.env.JWT_LOGIN_TOKEN,
-//       {
-//         expiresIn: "1d",
-//       }
-//     );
-
-//     // Include the "Bearer" prefix in the token
-//     const tokenWithBearer = `Bearer ${token}`;
-
-//     const respons = {
-//       code: 200,
-//       message: "singin successfully",
-//       data: { token: tokenWithBearer }, // Include the token with the "Bearer" prefix
-//       links: {
-//         self: req.url,
-//         signin: "/auth/signin",
-//       },
-//     };
-
-//     res.cookie("token", tokenWithBearer, {
-//       httpOnly: true,
-//     });
-
-//     res.status(200).json(respons);
-//   } catch (e) {
-//     console.log(e.message);
-//   }
-// };
 
 /**
  * logout from the app
@@ -290,42 +173,24 @@ exports.signinPostController = async (req, res) => {
  * @param {*} res
  * @param {*} next
  */
-// exports.logoutController = (req, res) => {
-//   try {
-//     // Set the cookie before sending the response
-//     res.cookie("token", "", {
-//       httpOnly: true,
-//       maxAge: 1,
-//     });
 
-//     // Send the response
-//     return res.json({
-//       message: "logout successfully",
-//       success: true,
-//     });
-//   } catch (error) {
-//     return res.status(500).json({ errors: error.message }); // Use res.status(500) to set the status code
-//   }
-//   // res.cookie("token", "", { maxAge: 1 });
-//   // res.clearCookie("token");
-
-//   // res.status(200).json({ message: "Logout successful" });
-// };
 exports.logoutController = (req, res) => {
   try {
     if (req.cookies.token) {
       // Clear the token cookie if it exists
       res.clearCookie("token", { httpOnly: true });
-    } else {
-      return;
     }
 
-    // Send the response
+    // Send the response for a successful logout
     return res.json({
       message: "Logout successfully",
       success: true,
     });
   } catch (error) {
-    return res.status(500).json({ errors: error.message }); // Use res.status(500) to set the status code
+    // Log the error for debugging purposes
+    console.error("Error in logoutController:", error);
+
+    // Provide an informative error message in the response
+    return res.status(500).json({ error: "An error occurred during logout" });
   }
 };
