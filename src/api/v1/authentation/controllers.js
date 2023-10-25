@@ -69,11 +69,11 @@ exports.signupPostController = async (req, res) => {
     //   //   "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
     // });
     res.cookie("token", token, {
-      domain: "localhost, ar-blog-api.onrender.com",
+      domain: "ar-blog-api.onrender.com",
       path: "/api/v1",
-      secure: false, // For development; set to true in production
+      secure: true, // Use true in a production environment when you have HTTPS
       httpOnly: true,
-      sameSite: "Lax", // Or 'Strict', as appropriate
+      sameSite: "none", // Ensure it's "none" for cross-origin requests
     });
     res.status(201).json(respons);
   } catch (e) {
@@ -217,9 +217,9 @@ exports.signinPostController = async (req, res) => {
     res.cookie("token", token, {
       domain: "ar-blog-api.onrender.com",
       path: "/api/v1",
-      secure: false, // For development; set to true in production
+      secure: true, // Use true in a production environment when you have HTTPS
       httpOnly: true,
-      sameSite: "none", // Or 'Strict', as appropriate
+      sameSite: "none", // Ensure it's "none" for cross-origin requests
     });
 
     res.status(200).json(respons);
