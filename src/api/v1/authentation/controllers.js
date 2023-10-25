@@ -69,11 +69,11 @@ exports.signupPostController = async (req, res) => {
     //   //   "aj-blog-web-rlzg47x1q-ariful-islams-projects-1e7ef33d.vercel.app",
     // });
     res.cookie("token", token, {
-      domain: "ar-blog-api.onrender.com",
+      domain: "localhost, ar-blog-api.onrender.com",
       path: "/api/v1",
-      secure: false, // Temporarily set to false during development
+      secure: false, // For development; set to true in production
       httpOnly: true,
-      sameSite: "None",
+      sameSite: "Lax", // Or 'Strict', as appropriate
     });
     res.status(201).json(respons);
   } catch (e) {
