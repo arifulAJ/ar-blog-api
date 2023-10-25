@@ -151,7 +151,7 @@ exports.signinPostController = async (req, res) => {
       },
     };
     res.cookie("token", token, {
-      domain: "ar-blog-api.onrender.com",
+      // domain: "ar-blog-api.onrender.com",
       // path: "/api/v1",
       secure: true, // Use true in a production environment when you have HTTPS
       httpOnly: true,

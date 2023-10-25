@@ -8,7 +8,7 @@ const swaggerDoc = YAML.load("./swagger.yaml");
 const OpenApiValidator = require("express-openapi-validator");
 const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 8080;
-
+const baseurl = process.env.DOMAIN;
 const userrouterAuth = require("./routes/auth/index");
 // router of articles
 const articleRouter = require("./routes/article/articlesRoutes");
@@ -48,7 +48,7 @@ connectionURL = connectionURL.replace("<password>", process.env.DB_PASSWORD);
 connectionURL = `${connectionURL}${process.env.DB_NAME}?${process.env.DB_URL_QUERY}`;
 // https://aj-blog-web-app.vercel.app
 const corsOptions = {
-  origin: "https://aj-blog-web-app.vercel.app",
+  origin: baseurl,
   credentials: true,
   // methods: ["GET", "PUT", "PATCH", "UPDATE", "POST"],
   // ... other CORS options
