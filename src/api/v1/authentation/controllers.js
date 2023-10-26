@@ -178,7 +178,13 @@ exports.logoutController = (req, res) => {
   try {
     if (req.cookies.token) {
       // Clear the token cookie if it exists
-      res.clearCookie("token", { httpOnly: true, path: "/api/v1" });
+      res.clearCookie("token", {
+        domain: "ar-blog-api.onrender.com",
+        path: "/api/v1",
+        secure: true, // Use true in a production environment when you have HTTPS
+        httpOnly: true,
+        sameSite: "none",
+      });
     }
 
     // Send the response for a successful logout
