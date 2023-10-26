@@ -185,6 +185,8 @@ exports.logoutController = (req, res) => {
         httpOnly: true,
         sameSite: "none",
       });
+    } else {
+      return res.redirect("/login");
     }
 
     // Send the response for a successful logout
