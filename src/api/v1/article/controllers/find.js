@@ -1,4 +1,3 @@
-
 const Article = require("../../../../model/Article");
 
 /**
@@ -61,14 +60,45 @@ exports.findAllArticles = async (req, res, next) => {
     };
 
     // Prepare links
+    // const links = {
+    //   self: req.originalUrl,
+    // };
+    // // if (pagination.nextPage !== undefined) {
+    //   links.next = `${req.baseUrl}?page=${pagination.nextPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}&search=${search}&tags=${tags}`;
+    // }
+    // if (pagination.prevPage !== undefined) {
+    //   links.prev = `${req.baseUrl}?page=${pagination.prevPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}&search=${search}&tags=${tags}`;
+    // }
     const links = {
       self: req.originalUrl,
     };
+
     if (pagination.nextPage !== undefined) {
-      links.next = `${req.baseUrl}?page=${pagination.nextPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}&search=${search}&tags=${tags}`;
+      let nextPageLink = `${req.baseUrl}?page=${pagination.nextPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}`;
+
+      // Check if 'search' and 'tags' parameters exist and add them if they do
+      if (search) {
+        nextPageLink += `&search=${search}`;
+      }
+      if (tags) {
+        nextPageLink += `&tags=${tags}`;
+      }
+
+      links.next = nextPageLink;
     }
+
     if (pagination.prevPage !== undefined) {
-      links.prev = `${req.baseUrl}?page=${pagination.prevPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}&search=${search}&tags=${tags}`;
+      let prevPageLink = `${req.baseUrl}?page=${pagination.prevPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}`;
+
+      // Check if 'search' and 'tags' parameters exist and add them if they do
+      if (search) {
+        prevPageLink += `&search=${search}`;
+      }
+      if (tags) {
+        prevPageLink += `&tags=${tags}`;
+      }
+
+      links.prev = prevPageLink;
     }
 
     // Respond with the articles
