@@ -155,8 +155,7 @@ exports.signinPostController = async (req, res) => {
       path: "/api/v1",
       secure: true, // Use true in a production environment when you have HTTPS
       httpOnly: true,
-      // sameSite: "none", // Ensure it's "none" for cross-origin requests
-      sameSite: "Lax",
+      sameSite: "none", // Ensure it's "none" for cross-origin requests
     });
 
     res.status(200).json(respons);
