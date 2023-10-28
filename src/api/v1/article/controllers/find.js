@@ -74,7 +74,7 @@ exports.findAllArticles = async (req, res, next) => {
     };
 
     if (pagination.nextPage !== undefined) {
-      let nextPageLink = `${req.baseUrl}?page=${pagination.nextPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}`;
+      let nextPageLink = `${req.baseUrl}/articles?page=${pagination.nextPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}`;
 
       // Check if 'search' and 'tags' parameters exist and add them if they do
       if (search) {
@@ -88,7 +88,7 @@ exports.findAllArticles = async (req, res, next) => {
     }
 
     if (pagination.prevPage !== undefined) {
-      let prevPageLink = `${req.baseUrl}?page=${pagination.prevPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}`;
+      let prevPageLink = `${req.baseUrl}/articles?page=${pagination.prevPage}&limit=${limit}&sort_type=${sort_type}&sort_by=${sort_by}`;
 
       // Check if 'search' and 'tags' parameters exist and add them if they do
       if (search) {
