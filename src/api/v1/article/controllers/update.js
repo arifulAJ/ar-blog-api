@@ -8,13 +8,12 @@ const Article = require("../../../../model/Article");
  * @param {*} next
  */
 exports.updateArticle = async (req, res, next) => {
-  console.log(req.body);
   if (!req.user) {
     return res.status(404).json({ message: "you need to signin" });
   }
 
   try {
-    const authenticatedUserId = req.user.id;
+    const authenticatedUserId = req.user.userId;
     const articleId = req.params.id;
     const updateData = req.body;
     if (!mongoose.Types.ObjectId.isValid(articleId)) {

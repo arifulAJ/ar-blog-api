@@ -6,6 +6,7 @@ const { updateController } = require("../../api/v1/user/controllers/update");
 const updateUserValidator = require("../../../validator/user/updateUserValidator");
 const { deleteuserControlar } = require("../../api/v1/user/controllers/delete");
 const { findSingleUser } = require("../../api/v1/user/controllers/findSingle");
+const { isAuthenticatedUser } = require("../../middleware/authMieeleware");
 
 /**
  * user all route are handes here
@@ -14,6 +15,11 @@ const { findSingleUser } = require("../../api/v1/user/controllers/findSingle");
 router.get("/user", findUsers);
 router.post("/user", signupvalidator, createuserController);
 router.get("/user/:id", findSingleUser);
-router.patch("/user/:id", updateUserValidator, updateController);
+router.patch(
+  "/user/:id",
+  isAuthenticatedUser,
+  updateUserValidator,
+  updateController
+);
 router.delete("/user/:id", deleteuserControlar);
 module.exports = router;

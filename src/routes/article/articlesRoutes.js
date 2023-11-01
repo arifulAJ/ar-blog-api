@@ -39,7 +39,7 @@ router.post(
 router.get("/articles/:id", findOneArticleById);
 
 router.put("/articles/:id", createdOrupdatedArticle);
-router.patch("/articles/:id", updateArticle);
-router.delete("/articles/:id", deleteArticle);
+router.patch("/articles/:id", isAuthenticatedUser, updateArticle);
+router.delete("/articles/:id", isAuthenticatedUser, deleteArticle);
 
 module.exports = router;
