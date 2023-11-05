@@ -523,13 +523,114 @@ paths:
           $ref: "#/components/responses/404"
         "500":
           $ref: "#/components/responses/500"
-  "/comments":
+  # "/comments":
+  # get:
+  #   security:
+  #     - bearerAuth: []
+  #   tags: [Comment]
+  #   description: retrive all comments
+  #   parameters:
+  #     - $ref: "#/components/parameters/commentPathparam"
+  #     - $ref: "#/components/parameters/pageParams"
+  #     - $ref: "#/components/parameters/limitParams"
+  #     - $ref: "#/components/parameters/sortTypeParams"
+  #     - $ref: "#/components/parameters/sortByparamsComment"
+
+  #   responses:
+  #     "200":
+  #       description: return the list of comment
+  #       content:
+  #         "application/json":
+  #           schema:
+  #             type: object
+  #             properties:
+  #               comment:
+  #                 type: array
+  #                 items:
+  #                   allOf:
+  #                     - type: object
+  #                       properties:
+  #                         body:
+  #                           type: string
+  #                           example: provide your comment body
+  #                         author:
+  #                           type: object
+  #                           properties:
+  #                             id:
+  #                               type: string
+  #                               example: commentId
+  #                             name:
+  #                               type: string
+  #                               example: comment author
+  #                     - $ref: "#/components/schemas/Timestamp"
+  #               pagination:
+  #                 type: object
+  #                 properties:
+  #                   prevComment:
+  #                     type: integer
+  #                     format: int32
+  #                     example: 1
+  #                   nextComment:
+  #                     type: integer
+  #                     format: int32
+  #                     example: 3
+  #                   limit:
+  #                     type: integer
+  #                     format: int32
+  #                     example: 10
+  #     "404":
+  #       $ref: "#/components/responses/404"
+  # post:
+  #   security:
+  #     - bearerAuth: []
+  #   tags: [Comment]
+  #   description: post your comment on the article
+  #   requestBody:
+  #     content:
+  #       "application/json":
+  #         schema:
+  #           type: object
+  #           properties:
+  #             body:
+  #               type: string
+
+  #               example: this is body of article
+  #             articleId:
+  #               type: string
+
+  #               example: 650a39ae55e35291c3f17b09
+  #             status:
+  #               type: string
+  #               enum: [private, public]
+  #               default: public
+
+  #           required: [body, articleId]
+  #   responses:
+  #     "201":
+  #       description: created successfully
+  #       content:
+  #         "application/json":
+  #           schema:
+  #             properties:
+  #               code:
+  #                 type: integer
+  #                 format: int32
+  #                 example: 201
+  #               message:
+  #                 type: string
+  #                 example: created successfully
+  #               body:
+  #                 $ref: "#/components/schemas/Comment"
+  #     "401":
+  #       $ref: "#/components/responses/401"
+  #     "400":
+  #       $ref: "#/components/responses/400"
+  "/comments/{id}":
     get:
-      security:
-        - bearerAuth: []
       tags: [Comment]
       description: retrive all comments
       parameters:
+        - $ref: "#/components/parameters/idpathparams"
         - $ref: "#/components/parameters/pageParams"
         - $ref: "#/components/parameters/limitParams"
         - $ref: "#/components/parameters/sortTypeParams"
@@ -584,6 +685,9 @@ paths:
         - bearerAuth: []
       tags: [Comment]
       description: post your comment on the article
+      parameters:
+        - $ref: "#/components/parameters/idpathparams"
+
       requestBody:
         content:
           "application/json":
@@ -594,16 +698,13 @@ paths:
                   type: string
 
                   example: this is body of article
-                articleId:
-                  type: string
 
-                  example: 650a39ae55e35291c3f17b09
                 status:
                   type: string
                   enum: [private, public]
                   default: public
 
-              required: [body, articleId]
+              required: [body]
       responses:
         "201":
           description: created successfully
@@ -624,7 +725,6 @@ paths:
           $ref: "#/components/responses/401"
         "400":
           $ref: "#/components/responses/400"
-  "/comments/{id}":
     patch:
       # operationId: update comment
       security:
@@ -1210,7 +1310,7 @@ components:
         type: integer
         format: int32
         example: 5
-      required: true
+      # required: true
     limitParamsUser:
       in: query
       name: limit

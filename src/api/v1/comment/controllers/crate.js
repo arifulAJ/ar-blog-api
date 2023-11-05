@@ -14,8 +14,10 @@ exports.createComments = async (req, res, next) => {
     return res.status(404).json({ message: "You should be signed in." });
   }
 
-  const { body, status, articleId } = req.body;
-  const authorId = req.user.id;
+  const { body, status } = req.body;
+  const articleId = req.params.id;
+  const authorId = req.user.userId;
+  console.log(authorId);
 
   // Check if articleId is a valid ObjectId
   if (!mongoose.Types.ObjectId.isValid(articleId)) {
@@ -26,7 +28,7 @@ exports.createComments = async (req, res, next) => {
 
   // Find the article to which the comment will be associated
   const articleComment = await Article.findById(articleId);
-
+  console.log(articleComment);
   if (!articleComment) {
     return res.status(404).json({
       message: `Article not found to comment on.`,

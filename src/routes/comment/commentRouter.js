@@ -5,6 +5,7 @@ const { findComments } = require("../../api/v1/comment/controllers/find");
 const {
   updateComments,
 } = require("../../api/v1/comment/controllers/updateComment");
+const { isAuthenticatedUser } = require("../../middleware/authMieeleware");
 
 /**
  * comment all route will handel this route
@@ -14,8 +15,8 @@ const {
  * patch comment
  * delete comment
  */
-router.get("/comments", findComments);
-router.post("/comments", createComments);
+router.get("/comments/:id", findComments);
+router.post("/comments/:id", isAuthenticatedUser, createComments);
 router.patch("/comments/:id", updateComments);
 router.delete("/comments/:id", deleteComment);
 
