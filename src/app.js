@@ -16,6 +16,7 @@ const articleRouter = require("./routes/article/articlesRoutes");
 const commentRoute = require("./routes/comment/commentRouter");
 // user router
 const userRoutesPath = require("./routes/user/userRoute");
+const likeRouter = require("./routes/like/likeRouter");
 // middleware
 const {
   bindUserWithRequest,
@@ -97,6 +98,8 @@ app.use("/api/v1", articleRouter);
 app.use("/api/v1", commentRoute);
 // users all route handel here
 app.use("/api/v1", userRoutesPath);
+// likes all route here
+app.use("/api/v1", likeRouter);
 
 // Add the OPTIONS request middleware to handle all routes that need it
 

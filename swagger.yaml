@@ -780,6 +780,83 @@ paths:
           $ref: "#/components/responses/401"
         "404":
           $ref: "#/components/responses/404"
+  "/likes/{id}":
+    get:
+      tags: [Like]
+      description: "retrive all likes in the specifice article "
+      parameters:
+        - $ref: "#/components/parameters/idpathparams"
+      responses:
+        "200":
+          description: return the list of likes
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  like:
+                    type: array
+                    items:
+                      allOf:
+                        - type: object
+                          properties:
+                            body:
+                              type: string
+                              example: provide your like
+                            liker:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  example: likeId
+                                name:
+                                  type: string
+                                  example: like author
+                        - $ref: "#/components/schemas/Timestamp"
+
+        "404":
+          $ref: "#/components/responses/404"
+    post:
+      security:
+        - bearerAuth: []
+      tags: [Like]
+      description: give your like on the article
+      parameters:
+        - $ref: "#/components/parameters/idpathparams"
+
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+
+                  example: likes imogi
+
+              required: [body]
+      responses:
+        "201":
+          description: liked successfully
+          content:
+            "application/json":
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    format: int32
+                    example: 201
+                  message:
+                    type: string
+                    example: liked successfully
+                  body:
+                    $ref: "#/components/schemas/Likes"
+        "401":
+          $ref: "#/components/responses/401"
+        "400":
+          $ref: "#/components/responses/400"
+
   "/user":
     get:
       # security:
@@ -1138,6 +1215,30 @@ components:
               example: public
           required: [id, authorId, articleId, title, body, status]
         - $ref: "#/components/schemas/Timestamp"
+    Likes:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+
+              example: "65096c2fd1b51ccf2612094a"
+            authorId:
+              type: string
+
+              example: "65096c2fd1b51ccf2612094a"
+            articleId:
+              type: string
+
+              example: "65096c2fd1b51ccf2612094a"
+            body:
+              type: string
+              format: text
+              example: imogi
+
+          required: [id, authorId, articleId, title, body]
+        - $ref: "#/components/schemas/Timestamp"
+
     Timestamp:
       type: object
       properties:

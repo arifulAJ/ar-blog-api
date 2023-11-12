@@ -3,9 +3,8 @@ const { Schema, model } = require("mongoose");
 const likeSchema = new Schema(
   {
     imogi: String,
-    author: { type: Schema.ObjectId, ref: "User" },
-    article: { type: Schema.ObjectId, ref: "Article" },
-    article: { type: Schema.ObjectId, ref: "Comment" },
+    authorId: { type: Schema.ObjectId, ref: "User" },
+    articleId: { type: Schema.ObjectId, ref: "Article" },
   },
   { timestamps: true, id: true }
 );
