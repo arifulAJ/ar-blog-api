@@ -825,6 +825,7 @@ paths:
         - $ref: "#/components/parameters/idpathparams"
 
       requestBody:
+        description: "you must sent only like . you don't need to change the body text"
         content:
           "application/json":
             schema:
@@ -833,7 +834,7 @@ paths:
                 body:
                   type: string
 
-                  example: likes imogi
+                  example: like
 
               required: [body]
       responses:
